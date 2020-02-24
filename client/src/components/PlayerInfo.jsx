@@ -4,7 +4,7 @@ function PlayerInfo(props) {
   const players = props.playerInfo;
   console.log(players);
   return (
-    <div className = "playerContainer">
+    <div className="playerContainer">
       {players.map(player => {
         return (
           <ul>
