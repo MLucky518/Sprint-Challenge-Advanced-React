@@ -1,26 +1,64 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import axios from "axios";
+import PlayerInfo from "./components/PlayerInfo";
+import PlayerForm from "./components/PlayerForm";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      playerInfo: []
+    };
+  }
+
+  fetchPlayerData = () => {
+    axios
+      .get("http://localhost:5000/api/players")
+
+      .then(info => {
+        console.log(info.data);
+        this.setState({ playerInfo: info.data });
+      })
+
+      .catch(err => {
+        console.log("cannot retrieve data", err);
+      });
+
+    // fetch("https://localhost:5000/api/players")
+    //   .then(res => {
+    //     return res.json();
+    //   })
+
+    //   .then(info => {
+    //     console.log(info);
+    //   })
+
+    //   .catch(err => {
+    //     console.log("cannot retrieve data", err);
+    //   });
+  };
+
+  componentDidMount() {
+    this.fetchPlayerData();
+  }
+
+  componentDidUpdate() {
+    console.log(this.state.playerInfo);
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <h1>Players</h1>
+        
+        <div>
+        <PlayerForm playerInfo={this.state.playerInfo} />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
